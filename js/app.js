@@ -93,7 +93,20 @@ function renderGameMenu(){
   document.getElementById('games-grid').innerHTML=list.map(g=>`<div class="game-tile ${g.challenge?'challenge':''} ${done.includes(g.id)?'completed':''}" onclick="startGame('${g.id}')"><span class="tile-emoji">${g.emoji}</span><div class="tile-name">${g.name}</div>${g.challenge?'<span class="tile-badge">🔥 ΠΡΟΚΛΗΣΗ</span>':''}<div class="tile-stars">${done.includes(g.id)?'✅ Ολοκληρώθηκε':'⭐'.repeat(g.stars||1)}</div></div>`).join('');
 }
 
-function getGamesForClassSubject(cls,subj){return window['GAMES_'+subj+'_'+cls]||[];}
+function getGamesForClassSubject(cls,subj){
+  const map={
+    'MATH_AB':typeof GAMES_MATH_AB!=='undefined'?GAMES_MATH_AB:[],
+    'MATH_GD':typeof GAMES_MATH_GD!=='undefined'?GAMES_MATH_GD:[],
+    'MATH_EST':typeof GAMES_MATH_EST!=='undefined'?GAMES_MATH_EST:[],
+    'LANG_AB':typeof GAMES_LANG_AB!=='undefined'?GAMES_LANG_AB:[],
+    'LANG_GD':typeof GAMES_LANG_GD!=='undefined'?GAMES_LANG_GD:[],
+    'LANG_EST':typeof GAMES_LANG_EST!=='undefined'?GAMES_LANG_EST:[],
+    'TPE_AB':typeof GAMES_TPE_AB!=='undefined'?GAMES_TPE_AB:[],
+    'TPE_GD':typeof GAMES_TPE_GD!=='undefined'?GAMES_TPE_GD:[],
+    'TPE_EST':typeof GAMES_TPE_EST!=='undefined'?GAMES_TPE_EST:[],
+  };
+  return map[subj+'_'+cls]||[];
+}
 
 // GAME
 function startGame(id){
