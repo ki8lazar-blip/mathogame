@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ΜαθηματοΠαιχνίδι 🎓</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-bg">
+    <div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+    <div class="bubble b4"></div><div class="bubble b5"></div>
+  </div>
+  <div class="welcome-content">
+    <div class="logo-area">
+      <div class="logo-icon">🎓</div>
+      <h1 class="logo-title">ΜαθηματοΠαιχνίδι</h1>
+      <p class="logo-sub">Μάθε παίζοντας — Μαθηματικά · Γλώσσα · ΤΠΕ</p>
+    </div>
+    <button class="btn-start" onclick="showScreen('screen-players')">▶ Ξεκινάμε!</button>
+  </div>
+</div>
+
+<div id="screen-players" class="screen">
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('screen-welcome')">← Πίσω</button>
+    <h2>Ποιος παίζει;</h2>
+  </div>
+  <div class="players-grid" id="players-grid"></div>
+  <div class="add-player-area">
+    <input type="text" id="new-player-name" placeholder="Όνομα νέου παίκτη..." maxlength="16" onkeydown="if(event.key==='Enter')addPlayer()">
+    <div class="avatar-picker" id="avatar-picker"></div>
+    <button class="btn-add" onclick="addPlayer()">+ Προσθήκη παίκτη</button>
+  </div>
+</div>
+
+<div id="screen-class" class="screen">
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('screen-players')">← Πίσω</button>
+    <h2>Επίλεξε Τάξη</h2>
+  </div>
+  <div class="current-player-badge" id="current-player-badge"></div>
+  <div class="class-cards">
+    <div class="class-card card-ab" onclick="selectClass('AB')">
+      <div class="class-emoji">🌈</div>
+      <div class="class-label">Α΄ – Β΄</div>
+      <div class="class-desc">Εύκολα & χαρούμενα<br>Μαθηματικά · Γλώσσα · ΤΠΕ</div>
+      <div class="class-stars">⭐</div>
+    </div>
+    <div class="class-card card-gd" onclick="selectClass('GD')">
+      <div class="class-emoji">🚀</div>
+      <div class="class-label">Γ΄ – Δ΄</div>
+      <div class="class-desc">Λίγο πιο απαιτητικά<br>Μαθηματικά · Γλώσσα · ΤΠΕ</div>
+      <div class="class-stars">⭐⭐</div>
+    </div>
+    <div class="class-card card-est" onclick="selectClass('EST')">
+      <div class="class-emoji">🏆</div>
+      <div class="class-label">Ε΄ – ΣΤ΄</div>
+      <div class="class-desc">Για γενναίους!<br>Μαθηματικά · Γλώσσα · ΤΠΕ</div>
+      <div class="class-stars">⭐⭐⭐</div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-subject" class="screen">
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('screen-class')">← Πίσω</button>
+    <h2 id="subject-title">Διάλεξε Μάθημα</h2>
+  </div>
+  <div class="current-player-badge" id="subject-player-badge"></div>
+  <div class="subject-cards">
+    <div class="subject-card subj-math" onclick="selectSubject('MATH')">
+      <div class="subj-emoji">🔢</div>
+      <div class="subj-label">Μαθηματικά</div>
+      <div class="subj-desc">Αριθμοί, πράξεις,<br>γεωμετρία & λογική</div>
+    </div>
+    <div class="subject-card subj-lang" onclick="selectSubject('LANG')">
+      <div class="subj-emoji">📖</div>
+      <div class="subj-label">Γλώσσα</div>
+      <div class="subj-desc">Γραμματική, λεξιλόγιο,<br>ορθογραφία & έκφραση</div>
+    </div>
+    <div class="subject-card subj-tpe" onclick="selectSubject('TPE')">
+      <div class="subj-emoji">💻</div>
+      <div class="subj-label">ΤΠΕ</div>
+      <div class="subj-desc">Υπολογιστές, Scratch<br>& ψηφιακός κόσμος</div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-gamemenu" class="screen">
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('screen-subject')">← Πίσω</button>
+    <h2 id="gamemenu-title">Διάλεξε Παιχνίδι</h2>
+  </div>
+  <div class="current-player-badge" id="gamemenu-player-badge"></div>
+  <div class="games-grid" id="games-grid"></div>
+</div>
+
+<div id="screen-game" class="screen">
+  <div class="game-topbar">
+    <button class="btn-back-sm" onclick="exitGame()">✕</button>
+    <div class="game-info">
+      <span id="game-title-bar">Παιχνίδι</span>
+      <span class="level-badge" id="level-badge">Πίστα 1/15</span>
+    </div>
+    <div class="game-score-area">
+      <span class="star-display" id="star-display">⭐ 0</span>
+    </div>
+  </div>
+  <div id="game-container"></div>
+</div>
+
+<div id="screen-results" class="screen">
+  <div class="results-content">
+    <div class="results-trophy" id="results-trophy">🏆</div>
+    <h2 id="results-title">Μπράβο!</h2>
+    <div class="results-stars" id="results-stars"></div>
+    <div class="results-stats" id="results-stats"></div>
+    <div class="results-buttons">
+      <button class="btn-primary" onclick="playAgain()">🔄 Ξανά!</button>
+      <button class="btn-secondary" onclick="showScreen('screen-gamemenu')">📚 Άλλο παιχνίδι</button>
+      <button class="btn-secondary" onclick="showScreen('screen-subject')">🎯 Άλλο μάθημα</button>
+      <button class="btn-secondary" onclick="showScreen('screen-class')">🏠 Αρχή</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/games-math-ab.js"></script>
+<script src="js/games-math-gd-est.js"></script>
+<script src="js/games-lang-all.js"></script>
+<script src="js/games-tpe-all.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>
