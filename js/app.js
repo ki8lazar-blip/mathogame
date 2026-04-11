@@ -35,41 +35,19 @@ function renderPlayers(){
   document.getElementById('avatar-picker').innerHTML=AVATARS.map(av=>`<button class="av-btn ${state.selectedAvatar===av?'selected':''}" onclick="selectAvatar('${av}')">${av}</button>`).join('');
 }
 function esc(n){return String(n).replace(/'/g,"\\'");}
-function selectPlayer(name){
-  state.currentPlayer=name;
-  renderPlayers();
-  setTimeout(()=>showScreen('screen-class'),200);
-}
+function selectPlayer(name){state.currentPlayer=name;renderPlayers();setTimeout(()=>showScreen('screen-class'),200);}
 function selectAvatar(av){state.selectedAvatar=av;renderPlayers();}
 function addPlayer(){
-  const inp=document.getElementById('new-player-name');
-  const name=inp.value.trim();
-  if(!name){inp.style.borderColor='#FF6B9D';setTimeout(()=>inp.style.borderColor='',1200);return;}
-  if(state.players.find(p=>p.name===name)){
-    // player exists - just select them
-    selectPlayer(name);return;
-  }
-  state.players.push({name,avatar:state.selectedAvatar});
-  inp.value='';saveState();renderPlayers();selectPlayer(name);
+  const inp=document.getElementById('new-player-name');const name=inp.value.trim();if(!name)return;
+  if(state.players.find(p=>p.name===name)){inp.style.borderColor='#FF6B9D';setTimeout(()=>inp.style.borderColor='',1200);return;}
+  state.players.push({name,avatar:state.selectedAvatar});inp.value='';saveState();renderPlayers();selectPlayer(name);
 }
 function deletePlayer(i){if(!confirm('Διαγραφή παίκτη;'))return;const name=state.players[i].name;state.players.splice(i,1);if(state.currentPlayer===name)state.currentPlayer=state.players[0]?.name||null;saveState();renderPlayers();}
 function getTotalScore(name){return Object.values(state.playerScores[name]||{}).reduce((a,b)=>a+b,0);}
 
 // CLASS
 function renderClassScreen(){const p=state.players.find(x=>x.name===state.currentPlayer);document.getElementById('current-player-badge').textContent=p?`${p.avatar} ${p.name}`:'';}
-function selectClass(cls){
-  // If no player selected, create a guest player automatically
-  if(!state.currentPlayer){
-    const guestName='Παίκτης 1';
-    if(!state.players.find(p=>p.name===guestName)){
-      state.players.push({name:guestName,avatar:'⭐'});
-      saveState();
-    }
-    state.currentPlayer=guestName;
-  }
-  state.currentClass=cls;
-  showScreen('screen-subject');
-}
+function selectClass(cls){if(!state.currentPlayer){showScreen('screen-players');return;}state.currentClass=cls;showScreen('screen-subject');}
 
 // SUBJECT
 function renderSubjectScreen(){
